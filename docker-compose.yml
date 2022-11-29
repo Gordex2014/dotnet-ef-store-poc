@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    container_name: training-db
+    environment:
+      POSTGRES_USER: training
+      POSTGRES_PASSWORD: training
+      POSTGRES_DB: training
+    networks:
+      - training-db-network
+    volumes:
+      - training-db-data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    networks:
+      - training-db-network
+    ports:
+      - 5050:80
+
+networks:
+  training-db-network:
+    name: training-db-network
+volumes:
+  training-db-data:

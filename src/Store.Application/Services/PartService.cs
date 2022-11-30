@@ -40,10 +40,9 @@ namespace Store.Application.Services
         {
             await _productRepository.GetFirstAsync(pr => pr.Id == productId);
 
-            var selectedPartIds = (await _productPartRepository.GetAllAsync(pp => pp.ProductId == productId)).Select(pp => pp.PartId);
-            var selectedParts = await _partRepository.GetAllAsync(pa => selectedPartIds.Contains(pa.Id));
-
-            return selectedParts.Select(pa => PartMapper.MapEntityToPartResponseDto(pa));
+            var selectedProductParts = await _productPartRepository.GetAllAsync(pp => pp.ProductId == productId);
+            
+            return selectedProductParts.Select(pp => PartMapper.MapEntityToPartResponseDto(pp.Part!));
         }
 
         public async Task<UpdatePartResponseDto> UpdateAsync(int partId, UpdatePartDto updatePartDto, CancellationToken cancellationToken = default)

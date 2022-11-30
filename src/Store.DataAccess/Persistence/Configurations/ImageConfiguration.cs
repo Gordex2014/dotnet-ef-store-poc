@@ -16,6 +16,10 @@ namespace Store.DataAccess.Persistence.Configurations
                 .HasColumnName("image_id")
                 .IsRequired();
 
+            builder.Property(i => i.Active)
+                .HasColumnName("image_active")
+                .IsRequired();
+
             builder.Property(i => i.Url)
                 .HasColumnName("image_url")
                 .IsRequired();

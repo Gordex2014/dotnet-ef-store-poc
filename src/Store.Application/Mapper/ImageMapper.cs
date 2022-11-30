@@ -1,5 +1,4 @@
-﻿using Store.Application.DTO;
-using Store.Application.DTO.Image;
+﻿using Store.Application.DTO.Image;
 using Store.Core.Entities;
 
 namespace Store.Application.Mapper

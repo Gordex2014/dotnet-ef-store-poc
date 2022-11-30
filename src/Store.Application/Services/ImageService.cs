@@ -51,7 +51,7 @@ namespace Store.Application.Services
         {
             var image = await _imageRepository.GetFirstAsync(i => i.Id == imageId);
 
-            var product = await _productRepository.GetFirstAsync(p => p.Id == image.ProductId);
+            await _productRepository.GetFirstAsync(p => p.Id == image.ProductId);
 
             var imageToUpdate = ImageMapper.MapUpdateImageDtoToEntity(imageId, updateImageDto);
 

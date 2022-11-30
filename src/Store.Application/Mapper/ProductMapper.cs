@@ -49,7 +49,7 @@ namespace Store.Application.Mapper
             };
         }
 
-        public static ProductResponseDto MapEntitiesToProductResponseDto(Product product, IEnumerable<Image> images)
+        public static ProductResponseDto MapEntitiesToProductResponseDto(Product product)
         {
             return new ProductResponseDto
             {
@@ -60,11 +60,11 @@ namespace Store.Application.Mapper
                 Stock = product.Stock,
                 Slug = product.Slug,
                 Description = product.Description,
-                Images = images.Select(image => ImageMapper.MapEntityToImageResponseDto(image)),
+                Images = product.Images?.Where(i => i.Active == true).Select(image => ImageMapper.MapEntityToImageResponseDto(image)),
             };
         }
 
-        public static ProductCompleteResponseDto MapEntitiesToProductCompleteResponseDto(Product product, IEnumerable<Image> images, IEnumerable<Part> parts)
+        public static ProductCompleteResponseDto MapEntitiesToProductCompleteResponseDto(Product product)
         {
             return new ProductCompleteResponseDto
             {
@@ -75,8 +75,8 @@ namespace Store.Application.Mapper
                 Stock = product.Stock,
                 Slug = product.Slug,
                 Description = product.Description,
-                Images = images.Select(image => ImageMapper.MapEntityToImageResponseDto(image)),
-                Parts = parts.Select(part => PartMapper.MapEntityToPartResponseDto(part)),
+                Images = product.Images?.Where(i => i.Active == true).Select(image => ImageMapper.MapEntityToImageResponseDto(image)),
+                Parts = product.ProductParts?.Where(p => p.Active == true).Select(pp => pp.Part).Select(pa => PartMapper.MapEntityToPartResponseDto(pa!)),
             };
         }
     }

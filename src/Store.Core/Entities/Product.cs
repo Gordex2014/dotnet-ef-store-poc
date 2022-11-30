@@ -11,7 +11,7 @@ namespace Store.Core.Entities
         public decimal Price { get; set; }
         public Currencies Currency { get; set; }
         public int Stock { get; set; }
-        public IEnumerable<Image>? Images { get; set; }
-        public IEnumerable<ProductPart>? ProductParts { get; set; }
+        public virtual ICollection<Image>? Images { get; set; }
+        public virtual ICollection<ProductPart>? ProductParts { get; set; }
     }
 }

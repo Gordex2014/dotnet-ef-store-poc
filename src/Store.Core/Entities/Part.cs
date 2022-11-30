@@ -11,6 +11,6 @@ namespace Store.Core.Entities
         public int Stock { get; set; }
         public string? Unit { get; set; }
         public string? Description { get; set; }
-        public IEnumerable<ProductPart>? ProductParts { get; set; }
+        public virtual ICollection<ProductPart>? ProductParts { get; set; }
     }
 }

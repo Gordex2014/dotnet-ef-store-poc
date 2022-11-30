@@ -15,11 +15,11 @@ services:
       - training-db-data:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: pgadmin4
+    container_name: training-pgadmin4
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_DEFAULT_EMAIL: training@training.com
+      PGADMIN_DEFAULT_PASSWORD: training
     networks:
       - training-db-network
     ports:

@@ -16,6 +16,10 @@ namespace Store.DataAccess.Persistence.Configurations
                 .HasColumnName("product_part_id")
                 .IsRequired();
 
+            builder.Property(i => i.Active)
+                .HasColumnName("product_part_active")
+                .IsRequired();
+
             builder.Property(pp => pp.ProductId)
                 .HasColumnName("product_part_product_id")
                 .IsRequired();

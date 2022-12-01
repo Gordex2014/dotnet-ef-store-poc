@@ -7,7 +7,7 @@ using Store.DataAccess.Repositories.Contracts;
 
 namespace Store.Application.Services
 {
-    internal class PartService : IPartService
+    public class PartService : IPartService
     {
         private readonly IPartRepository _partRepository;
         private readonly IProductRepository _productRepository;

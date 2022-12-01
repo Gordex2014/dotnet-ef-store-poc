@@ -24,9 +24,9 @@ namespace Store.Application.Services
 
             var image = ImageMapper.MapCreateImageDtoToEntity(createImageDto);
 
-            await _imageRepository.AddAsync(image);
+            var newImage = await _imageRepository.AddAsync(image);
 
-            var response = ImageMapper.MapEntityToCreateImageResponseDto(image);
+            var response = ImageMapper.MapEntityToCreateImageResponseDto(newImage);
             return response;
         }
 
@@ -34,9 +34,9 @@ namespace Store.Application.Services
         {
             var image = await _imageRepository.GetFirstAsync(i => i.Id == imageId);
 
-            await _imageRepository.DeleteAsync(image);
+            var deletedImage = await _imageRepository.DeleteAsync(image);
 
-            return BaseMapper<Image>.MapEntityToBaseResponseDto(image);
+            return BaseMapper<Image>.MapEntityToBaseResponseDto(deletedImage);
         }
 
         public async Task<IEnumerable<ImageResponseDto>> GetAllByProductId(int productId, CancellationToken cancellationToken = default)

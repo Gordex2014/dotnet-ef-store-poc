@@ -18,7 +18,7 @@ namespace Store.Api.Controllers
             _imageService = imageService;
         }
 
-        [HttpGet("product/{id}")]
+        [HttpGet("Product/{id}")]
         public async Task<ActionResult<ApiResult<IEnumerable<ImageResponseDto>>>> GetAllByProductId(int id)
         {
             var images = await _imageService.GetAllByProductId(id);

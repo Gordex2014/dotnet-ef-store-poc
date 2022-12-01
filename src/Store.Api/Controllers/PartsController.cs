@@ -17,7 +17,7 @@ namespace Store.Api.Controllers
             _partService = partService;
         }
 
-        [HttpGet("product/{id}")]
+        [HttpGet("Product/{id}")]
         public async Task<ActionResult<ApiResult<IEnumerable<PartResponseDto>>>> GetAllByProductId(int id)
         {
             var part = await _partService.GetAllByProductId(id);

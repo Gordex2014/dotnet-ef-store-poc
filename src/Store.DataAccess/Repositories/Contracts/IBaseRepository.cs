@@ -17,4 +17,6 @@ public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     Task<TEntity> UpdateAsync(TEntity entity);
 
     Task<TEntity> DeleteAsync(TEntity entity);
+
+    Task<IEnumerable<TEntity>> UpdateManyAsync(IEnumerable<TEntity> entities);
 }

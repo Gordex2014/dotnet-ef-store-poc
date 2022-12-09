@@ -1,5 +1,6 @@
 ﻿using Store.Application.DTO;
 using Store.Application.DTO.Product;
+using Store.Core.Entities;
 
 namespace Store.Application.Services.Contracts
 {
@@ -10,5 +11,7 @@ namespace Store.Application.Services.Contracts
         Task<IEnumerable<ProductResponseDto>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<ProductCompleteResponseDto> GetByIdAsync(int productId, CancellationToken cancellationToken = default);
         Task<BaseResponseDto> DeleteAsync(int productId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Product>> GetMultipleAsync(IEnumerable<int> productIds, CancellationToken cancellationToken = default);
+        Task<IEnumerable<int>> UpdateMultipleProductStockAsync(BuyCartProductsDto updateMultipleProductsDto);
     }
 }

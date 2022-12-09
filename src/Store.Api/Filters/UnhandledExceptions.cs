@@ -8,7 +8,10 @@ namespace Store.Api.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            context.Result = new ObjectResult(ApiResult<string>.Failure(new List<string> { context.Exception.Message }));
+            context.Result = new ObjectResult(ApiResult<string>.Failure(new List<string> { context.Exception.Message }))
+            {
+                StatusCode = 400
+            };
         }
     }
 }

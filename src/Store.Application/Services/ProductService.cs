@@ -1,4 +1,5 @@
-﻿using Store.Application.DTO;
+﻿using Microsoft.VisualBasic;
+using Store.Application.DTO;
 using Store.Application.DTO.Product;
 using Store.Application.Mapper;
 using Store.Application.Services.Contracts;
@@ -49,6 +50,54 @@ namespace Store.Application.Services
             return response;
         }
 
+        public async Task<IEnumerable<int>> UpdateMultipleProductStockAsync(BuyCartProductsDto updateMultipleProductsDto)
+        {
+            var productIds = updateMultipleProductsDto.Products!.Select(p => p.ProductId).ToList();
+
+            var products = await _productRepository.GetAllAsync(p => productIds.Contains(p.Id));
+
+            if (products.Count() < productIds.Count())
+            {
+                var matchedProducts = from id in productIds
+                                      join product in products on id equals product.Id
+                                      select product.Id;
+
+                var nonMatchedIds = productIds.Where(l => !matchedProducts.Contains(l)).ToList();
+
+                var errorMessage = nonMatchedIds.Count() > 1 ? $"Products with ids {string.Join(",", nonMatchedIds)} non registered" : $"Product with id {nonMatchedIds.FirstOrDefault()} not found";
+
+                throw new Exception(errorMessage);
+            }
+
+            // Check if stock is available
+            var newProductInfo = from productToUpdate in updateMultipleProductsDto.Products
+                                 join product in products on productToUpdate.ProductId equals product.Id
+                                 select new
+                                 {
+                                     ProductId = productToUpdate.ProductId,
+                                     QuantityRemaining = product.Stock - productToUpdate.Quantity
+                                 };
+
+
+            foreach (var productInfo in newProductInfo)
+            {
+                if (productInfo.QuantityRemaining < 0)
+                {
+                    throw new Exception($"Not enough stock for product {productInfo.ProductId}");
+                }
+            }
+
+            foreach (var product in products)
+            {
+                var quantity = updateMultipleProductsDto.Products!.First(p => p.ProductId == product.Id).Quantity;
+                product.Stock -= quantity;
+            }
+
+            await _productRepository.UpdateManyAsync(products);
+
+            return productIds;
+        }
+
         public async Task<ProductCompleteResponseDto> GetByIdAsync(int productId, CancellationToken cancellationToken = default)
         {
             var product = await _productRepository.GetFirstAsync(p => p.Id == productId);
@@ -63,6 +112,12 @@ namespace Store.Application.Services
             var newProduct = ProductMapper.MapUpdateProductDtoToEntity(productId, updateProductDto);
             var updatedProduct = await _productRepository.UpdateAsync(newProduct);
             return ProductMapper.MapEntityToUpdateProductResponseDto(updatedProduct);
+        }
+
+        public async Task<IEnumerable<Product>> GetMultipleAsync(IEnumerable<int> productIds, CancellationToken cancellationToken = default)
+        {
+            var products = await _productRepository.GetAllAsync(p => productIds.Contains(p.Id));
+            return products;
         }
     }
 }

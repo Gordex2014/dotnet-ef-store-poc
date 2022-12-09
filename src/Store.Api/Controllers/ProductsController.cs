@@ -43,6 +43,14 @@ namespace Store.Api.Controllers
             return Created(String.Empty, response);
         }
 
+        [HttpPost("cart")]
+        public async Task<ActionResult<ApiResult<BuyCartProductsResponseDto>>> BuyCart([FromBody] BuyCartProductsDto buyCartProductsDto)
+        {
+            var productIds = await _productService.UpdateMultipleProductStockAsync(buyCartProductsDto);
+            var response = ApiResult<BuyCartProductsResponseDto>.Success(new BuyCartProductsResponseDto { UpdatedProducts = productIds });
+            return Ok(response);
+        }
+
         // PUT api/<ProductsController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResult<UpdateProductResponseDto>>> Put(int id, [FromBody] UpdateProductDto updateProductDto)

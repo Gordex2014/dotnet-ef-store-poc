@@ -70,5 +70,13 @@ namespace Store.DataAccess.Repositories
 
             return entity;
         }
+
+        public async Task<IEnumerable<TEntity>> UpdateManyAsync(IEnumerable<TEntity> entities)
+        {
+            _dbSet.UpdateRange(entities);
+            await _context.SaveChangesAsync();
+
+            return entities;
+        }
     }
 }

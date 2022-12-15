@@ -56,7 +56,7 @@ namespace Store.Application.Services
 
             var products = await _productRepository.GetAllAsync(p => productIds.Contains(p.Id));
 
-            if (products.Count() < productIds.Count())
+            if (products.Count < productIds.Count)
             {
                 var matchedProducts = from id in productIds
                                       join product in products on id equals product.Id
@@ -64,7 +64,7 @@ namespace Store.Application.Services
 
                 var nonMatchedIds = productIds.Where(l => !matchedProducts.Contains(l)).ToList();
 
-                var errorMessage = nonMatchedIds.Count() > 1 ? $"Products with ids {string.Join(",", nonMatchedIds)} non registered" : $"Product with id {nonMatchedIds.FirstOrDefault()} not found";
+                var errorMessage = nonMatchedIds.Count > 1 ? $"Products with ids {string.Join(",", nonMatchedIds)} non registered" : $"Product with id {nonMatchedIds.FirstOrDefault()} not found";
 
                 throw new Exception(errorMessage);
             }
